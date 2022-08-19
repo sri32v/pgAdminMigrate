@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  server:
+    container_name: mwserver
+    build: .
+    ports:
+      - "5000:5000"
+  db:
+    image: "postgres"
+    container_name: pgdb
+    ports:
+      - "4321:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: docker
+    volumes:
+      - data:/var/lib/postgresql/data
+  dbadmin:
+    image: "dpage/pgadmin4"
+    container_name: pgadmin
+    ports:
+      - "5555:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+volumes:
+  data:
